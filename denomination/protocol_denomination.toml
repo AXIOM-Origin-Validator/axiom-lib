@@ -1,0 +1,19 @@
+# ═══════════════════════════════════════════════════════════════════════════
+#  AXIOM · DENOMINATION register     →  axiom_denomination::{ATOMS_PER_AXC, DUST_LIMIT}
+# ═══════════════════════════════════════════════════════════════════════════
+#  The UNIT RELATIONSHIP (atom ↔ AXC ↔ L$) every AXIOM crate depends on.
+#  `axiom-denomination` is the lowest crate in the graph — core/logic, lambda,
+#  nabla and the WASM webclient all read ATOMS_PER_AXC through the
+#  `axiom_denomination` API, never by redefining it. build.rs reads THIS file and
+#  generates the constant; no hand-typed literal exists anywhere else.
+#
+#  SCOPE        This file holds ONLY the unit ladder. Policy thresholds that are
+#               merely expressed in atoms (e.g. the dust floor / minimum tx amount)
+#               are NOT here — they belong to the layer that enforces them. The
+#               dust floor is a Core rule: protocol_core.toml `minimum_tx_atoms`.
+#  CoreID NOTE  atoms_per_axc is baked into Core's economic logic (via the ELF's
+#               dependency on axiom-denomination) — changing it rotates the CoreID.
+#  FORMAT       key = value    # LITERAL u64; `_` digit separators ok.
+# ───────────────────────────────────────────────────────────────────────────
+
+atoms_per_axc = 10_000_000_000   # 1 AXC = 10^10 atoms (smallest indivisible unit)

@@ -1,0 +1,12 @@
+[package]
+name = "axiom-rate-limit"
+version.workspace = true
+edition = "2021"
+description = "Per-IP sliding-window rate limiter for AXIOM TCP listeners. Single source shared by Lambda + ANTIE; zero AXIOM deps, std-only."
+license = "GPL-3.0"
+
+[lib]
+name = "axiom_rate_limit"
+path = "src/lib.rs"
+
+[dependencies]

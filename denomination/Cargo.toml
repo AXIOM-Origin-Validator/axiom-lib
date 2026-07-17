@@ -1,0 +1,32 @@
+[package]
+name = "axiom-denomination"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-3.0"
+description = "AXC/L$/atom conversion utilities for AXIOM developers"
+
+# Developers: set your default digit_version here.
+# This is the display scaling factor for L$.
+# digit_version=0: 1 AXC = 1 L$ (genesis default)
+# digit_version=3: 1 AXC = 1,000 L$ (after Console migration)
+# At runtime, the actual digit_version comes from the network (Console/VSP).
+[package.metadata.axiom]
+digit_version = 0
+
+[features]
+# `std` is the canonical opt-in for std-mode (native binaries get this
+# via the default). Consumers that disable defaults (the AVM-guest path
+# in core-logic, the WASM webclient) automatically land in no_std mode
+# — see the `#![cfg_attr(not(feature = "std"), no_std)]` in lib.rs.
+default = ["std"]
+std = ["dep:chrono"]
+# Back-compat alias: lets existing consumers that pass
+# `features = ["no_std"]` continue to resolve. It's a no-op — what
+# actually drives no_std mode is the *absence* of the std feature.
+no_std = []
+
+[dependencies]
+# chrono is used only by `print_if_tty` (std builds) for the boot timestamp.
+# Optional + gated by the `std` feature so no_std consumers (AVM-guest)
+# do not pull chrono into their dependency tree at all.
+chrono = { version = "0.4", default-features = false, features = ["clock"], optional = true }

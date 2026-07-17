@@ -1,0 +1,27 @@
+[package]
+name = "axiom-errors"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Structured error responses, recovery hints, and CBOR tag registry for AXIOM. Companion crate to AXIOM_YellowPaper_Errors.md."
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+serde = { workspace = true, features = ["derive", "alloc"] }
+ciborium = { workspace = true }
+# blake3 for RequestEnvelope signing message computation. Available in
+# both std and no_std builds (workspace entry has default-features = false).
+blake3 = { workspace = true, optional = true }
+
+[features]
+default = ["std"]
+# std is on by default for host code (Core, Lambda, Nabla, ANTIE, SDK).
+# Turn it off for the AVM guest ELF which compiles no_std.
+std = ["serde/std", "ciborium/std", "blake3"]
+
+[dev-dependencies]
+# For roundtrip tests
+serde_bytes = "0.11"
